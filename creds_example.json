@@ -1,0 +1,9 @@
+{
+    "openai_api_key": "aA1",
+    "twilio": {
+         "account_sid": "bB2",
+         "auth_token": "cC2",
+         "phone_number": "+12345678901"
+    }
+ }
+ 

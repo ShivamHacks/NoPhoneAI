@@ -1,0 +1,14 @@
+# API Keys
+creds.json
+
+# Virtual environment
+bin/
+include/
+lib/
+pyvenv.cfg
+
+# IDE
+.vscode/
+
+# Mac
+.DS_Store
