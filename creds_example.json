@@ -1,5 +1,6 @@
 {
     "openai_api_key": "aA1",
+    "assemblyai_apy_key": "bb2",
     "twilio": {
          "account_sid": "bB2",
          "auth_token": "cC2",

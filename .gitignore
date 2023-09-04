@@ -1,5 +1,6 @@
 # API Keys
 creds.json
+google_creds.json
 
 # Virtual environment
 bin/

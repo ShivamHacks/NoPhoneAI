@@ -11,7 +11,7 @@ from langchain.memory import ConversationBufferMemory
 class ChatManager:
 
     def __init__(self):
-        self.openai_api_key = json.load(open("creds.json", "r"))["openai_api_key"]
+        self.OPENAI_API_KEY = json.load(open("creds.json", "r"))["openai_api_key"]
     
     def setup_chat(self, name, business, objective, verbose):
         system_template = """I want you to act as me, {name}, talking on the phone with
@@ -33,7 +33,7 @@ class ChatManager:
         chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
 
         self.chain = LLMChain(
-            llm=ChatOpenAI(openai_api_key=self.openai_api_key),
+            llm=ChatOpenAI(openai_api_key=self.OPENAI_API_KEY),
             prompt=chat_prompt,
             memory=ConversationBufferMemory(memory_key="chat_history"),
             verbose=verbose
