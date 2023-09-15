@@ -1,6 +1,5 @@
 # API Keys
 creds.json
-google_creds.json
 
 # Virtual environment
 bin/
@@ -13,3 +12,6 @@ pyvenv.cfg
 
 # Mac
 .DS_Store
+
+# Test output
+*.mp3

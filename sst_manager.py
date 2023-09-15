@@ -4,10 +4,10 @@ import pyaudio
 import json
 from threading import Thread
 
-class SpeechManager:
+class STTManager:
 
     def __init__(self):
-        self.ASSEMBLYAI_API_KEY = json.load(open("creds.json", "r"))["assemblyai_apy_key"]
+        self.ASSEMBLYAI_API_KEY = json.load(open("creds.json", "r"))["assemblyai_api_key"]
         self.FRAMES_PER_BUFFER = 3200
         self.SAMPLE_RATE = 16000
         self.open_mic = False
@@ -66,6 +66,6 @@ class SpeechManager:
 
 
 if __name__ == "__main__":
-    speech_manager = SpeechManager()
-    speech_manager.start_mic_transcription()
-    speech_manager.setup_speech()
+    stt_manager = STTManager()
+    stt_manager.start_mic_transcription()
+    stt_manager.setup_speech()
