@@ -14,7 +14,7 @@ class TTSManager:
         self.ELEVENLABS_VOICE_ID = 'CYw3kZ02Hs0563khs1Fj'
         self.ELEVENLABS_URI = f"wss://api.elevenlabs.io/v1/text-to-speech/{self.ELEVENLABS_VOICE_ID}/stream-input?model_id={self.ELEVENLABS_MODEL}"
 
-    async def generate_tts(self, text):
+    async def tts_generator(self, text):
         async with websockets.connect(self.ELEVENLABS_URI) as websocket:
 
             # Initialize the connection
@@ -43,7 +43,7 @@ class TTSManager:
                 try:
                     response = await websocket.recv()
                     data = json.loads(response)
-                    print("Server response:", data)
+                    # print("Server response:", data)
 
                     if data["audio"]:
                         chunk = base64.b64decode(data["audio"])
@@ -55,15 +55,16 @@ class TTSManager:
                     print("Connection closed")
                     break
     
-    def generate_tts_sync(self, text):
-        async def get_tts_chunks(text):
-            print("Generating TTS...")
-            data = b""
-            async for chunk in self.generate_tts(text):
-                data += chunk
-            print("TTS generated")
-            return data
-        return asyncio.get_event_loop().run_until_complete(get_tts_chunks(text))
+    async def get_tts_bytes(self, text):
+        print("Generating TTS...")
+        data = b""
+        async for chunk in self.tts_generator(text):
+            data += chunk
+        print("TTS generated")
+        return data
+
+    def get_tts_bytes_sync(self, text):
+        return asyncio.run(self.get_tts_bytes(text))
 
     def start_terminal_interface(self):
         print("Starting TTS. Type quit to exit.")
@@ -73,8 +74,9 @@ class TTSManager:
             if text.lower() == "quit":
                 print("Quitting TTS")
                 break
-
-            segment = AudioSegment.from_file(io.BytesIO(self.generate_tts_sync(text)), format="mp3")
+            
+            tts_data = self.get_tts_bytes_sync(text)
+            segment = AudioSegment.from_file(io.BytesIO(tts_data), format="mp3")
             play(segment)
 
 if __name__ == "__main__":
