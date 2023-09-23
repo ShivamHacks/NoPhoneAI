@@ -42,13 +42,15 @@ class ChatManager:
     def run(self, content):
         return self.chain.run(content)
     
-    def start_terminal_interface(self):
+    def setup_chat_from_terminal(self):
         name = input("Name (default=John Smith): ") or "John Smith"
         business = input("Business (default=Walgreens): ") or "Walgreens"
         objective = input("Objective (default=Check if they have dayquill in stock): ") or "Check if they have dayquill in stock"
         verbose = input("Verbose (default=True): ") or "True"
         self.setup_chat(name, business, objective, verbose)
 
+    def start_terminal_interface(self):
+        self.setup_chat_from_terminal()
         print("Starting chat. Type quit to exit.")
         while True:
             content = input("Walgreens: ")
