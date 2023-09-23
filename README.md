@@ -13,6 +13,7 @@ Commands (from this directory):
 
 Special dependencies
 * PyAudio: https://pypi.org/project/PyAudio
+* FFmpeg: https://ffmpeg.org/
 
 # Usage
 

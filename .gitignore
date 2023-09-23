@@ -1,6 +1,9 @@
 # API Keys
 creds.json
 
+# Python cache
+__pycache__/
+
 # Virtual environment
 bin/
 include/

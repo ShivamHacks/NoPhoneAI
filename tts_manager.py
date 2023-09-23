@@ -2,6 +2,9 @@ import asyncio
 import websockets
 import json
 import base64
+from pydub import AudioSegment
+from pydub.playback import play
+import io
 
 class TTSManager:
 
@@ -51,6 +54,16 @@ class TTSManager:
                 except websockets.exceptions.ConnectionClosed:
                     print("Connection closed")
                     break
+    
+    def generate_tts_sync(self, text):
+        async def get_tts_chunks(text):
+            print("Generating TTS...")
+            data = b""
+            async for chunk in self.generate_tts(text):
+                data += chunk
+            print("TTS generated")
+            return data
+        return asyncio.get_event_loop().run_until_complete(get_tts_chunks(text))
 
     def start_terminal_interface(self):
         print("Starting TTS. Type quit to exit.")
@@ -61,14 +74,8 @@ class TTSManager:
                 print("Quitting TTS")
                 break
 
-            async def get_tts_chunks(text):
-                print("Generating TTS...")
-                with open('output.mp3', 'wb') as f:
-                    async for chunk in self.generate_tts(text):
-                        f.write(chunk)
-                    print("TTS generated")
-            
-            asyncio.get_event_loop().run_until_complete(get_tts_chunks(text))
+            segment = AudioSegment.from_file(io.BytesIO(self.generate_tts_sync(text)), format="mp3")
+            play(segment)
 
 if __name__ == "__main__":
     tts_manager = TTSManager()
