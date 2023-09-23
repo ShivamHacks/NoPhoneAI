@@ -2,6 +2,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 import io
 import asyncio
+import pyaudio
 
 from chat_manager import ChatManager
 from stt_manager3 import STTManager
@@ -11,16 +12,26 @@ chat_manager = ChatManager()
 stt_manager = STTManager()
 tts_manager = TTSManager()
 
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 44100
+audio_player = pyaudio.PyAudio()
+stream = audio_player.open(format=FORMAT, channels=CHANNELS, rate=RATE, output=True)
+
 tts_queue = asyncio.Queue(maxsize=-1) # infinite queue
 async def process_tts_queue():
     while True:
         text = await tts_queue.get()
         print("Generating TTS...")
         stt_manager.set_read_from_mic(False)
-        voice_response = await tts_manager.get_tts_bytes(text)
-        segment = AudioSegment.from_file(io.BytesIO(voice_response), format="mp3")
-        play(segment)
-        await asyncio.sleep(3)
+
+        async for mp3_chunk in tts_manager.tts_generator(text):
+            audio_chunk = AudioSegment.from_mp3(io.BytesIO(mp3_chunk))
+            audio_data = audio_chunk.raw_data
+            stream.write(audio_data)
+        #voice_response = await tts_manager.get_tts_bytes(text)
+        #segment = AudioSegment.from_file(io.BytesIO(voice_response), format="mp3")
+        #play(segment)
         stt_manager.set_read_from_mic(True)
 
 def process_stt(text):
