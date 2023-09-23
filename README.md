@@ -11,9 +11,10 @@ Commands (from this directory):
 1. Install all dependencies: `pip install -r requirements.txt`
 2. Add new dependencies: `pip freeze > requirements.txt`
 
-Special dependencies
+Special dependencies (all installed on Mac using `brew`)
 * PyAudio: https://pypi.org/project/PyAudio
 * FFmpeg: https://ffmpeg.org/
+* MPV: https://mpv.io/
 
 # Usage
 
