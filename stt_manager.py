@@ -24,6 +24,7 @@ class STTManager:
         if not transcript.text:
             return
 
+        # TODO: measure time between real time STT and final transcript prediction
         if isinstance(transcript, aai.RealtimeFinalTranscript):
             print(transcript.text, end="\r\n")
             if self.transcription_callback is not None:

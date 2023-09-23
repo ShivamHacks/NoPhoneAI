@@ -32,6 +32,7 @@ class ChatManager:
         human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
         chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
 
+        # TODO: make this streaming to get even faster results
         self.chain = LLMChain(
             llm=ChatOpenAI(openai_api_key=self.OPENAI_API_KEY),
             prompt=chat_prompt,
